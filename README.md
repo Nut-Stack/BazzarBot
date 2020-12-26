@@ -1,7 +1,7 @@
 # BazzarBot
 Hypixel Skyblock Bazzar Product Viewer
 
-I made this little product a while ago and decided to make it public. I found that it is incredibly usefull at squashing those whom bid over when buying, and destroying those whom bid under you when selling. Happy Capitalism!
+I made this little product a while ago and decided to make it public. I found that it is incredibly usefull at squashing those whom bid over when buying, and destroying those whom bid under when selling. Happy Capitalism!
 
 If you want to use, you need to:
 Get your API key from Hypixel Skyblock
