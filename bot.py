@@ -60,7 +60,7 @@ def text_to_speech(BUY,SELL,MARGIN):
 
 
 def animate(i):
-    data = requests.get("https://api.hypixel.net/skyblock/bazaar?key=14d54f91-7fc1-45d6-8e92-5c2f34ad1574&name=crazykiller946").json()
+    data = requests.get("https://api.hypixel.net/skyblock/bazaar?key=#####&name=#######").json()
     products = (data["products"])
     buy_summary = (products.get(item).get("buy_summary"))
     sell_price = buy_summary[0].get('pricePerUnit')
