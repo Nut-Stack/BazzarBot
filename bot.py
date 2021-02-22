@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style, axis
 import pyttsx3
-
+import threading
 
 plt.style.use("dark_background")
 
@@ -38,48 +38,37 @@ buyy = []
 marginn = []
 buy_orderss = []
 sell_orderss = []
-
 ys = []
-
-def text_to_speech():
-    if len(buyy) > 2:
-        if buyy[-1] > buyy[-2]:
-            engine.say("Buy increase {}".format(abs(round(buyy[-2]-buyy[-1],1))))
-
-    if len(buyy) > 2:
-        if buyy[-1] < buyy[-2]:
-            engine.say("Buy decrease {}".format(abs(round(buyy[-2]-buyy[-1],1))))
-
-    if len(selll) > 2:
-        if selll[-1] > selll[-2]:
-            engine.say("Sell increase {}".format(abs(round(selll[-2]-selll[-1],1))))
-
-    if len(selll) > 2:
-        if selll[-1] < selll[-2]:
-            engine.say("Sell decrease {}".format(abs(round(selll[-2]-selll[-1],1))))
-
-    if len(marginn) > 2:
-        if marginn[-1] <.01:
-            engine.say("Margin is lower than 1!")
-
-    engine.runAndWait()
+def text_to_speech(BUY,SELL,MARGIN):
+    while True:
+        if len(BUY) > 2:
+            if BUY[-1] > BUY[-2]:
+                engine.say("Buy increase {}".format(abs(round(BUY[-2]-BUY[-1],1))))
+        if len(BUY) > 2:
+            if BUY[-1] < BUY[-2]:
+                engine.say("Buy decrease {}".format(abs(round(BUY[-2]-BUY[-1],1))))
+        if len(SELL) > 2:
+            if SELL[-1] > SELL[-2]:
+                engine.say("Sell increase {}".format(abs(round(SELL[-2]-SELL[-1],1))))
+        if len(SELL) > 2:
+            if SELL[-1] < SELL[-2]:
+                engine.say("Sell decrease {}".format(abs(round(SELL[-2]-SELL[-1],1))))
+        if len(MARGIN) > 2:
+            if MARGIN[-1] <.011:
+                engine.say("Margin is lower than 1!")
+        engine.runAndWait()
 
 
 def animate(i):
-    text_to_speech()
-    data = requests.get("https://api.hypixel.net/skyblock/bazaar?key=#ENTERYOURKEYHERE#&name=#ENTERYOURUSERNAMEHERE#").json()
-
+    data = requests.get("https://api.hypixel.net/skyblock/bazaar?key=14d54f91-7fc1-45d6-8e92-5c2f34ad1574&name=crazykiller946").json()
     products = (data["products"])
-
     buy_summary = (products.get(item).get("buy_summary"))
-    #print("Buy Summary: " + str(buy_summary[0]))
     sell_price = buy_summary[0].get('pricePerUnit')
     orders_buy = buy_summary[0].get('orders')
     amount_buy = buy_summary[0].get('amount')
 
     sell_summary = (products.get(item).get("sell_summary"))
-    #print("Sell Summary:" + str(sell_summary[0]))
-    buy_price = sell_summary[0].get('pricePerUnit') #####
+    buy_price = sell_summary[0].get('pricePerUnit')
     orders_sell = sell_summary[0].get('orders')
     amount_sell = sell_summary[0].get('amount')
 
@@ -99,7 +88,6 @@ def animate(i):
         marginn.remove(marginn[0])
         buy_orderss.remove(buy_orderss[0])
         sell_orderss.remove(sell_orderss[0])
-
 
     ax1.clear()
     ax2.clear()
@@ -123,7 +111,6 @@ def animate(i):
     ax6.plot(ys, selll, color = 'r', label = sell_price)
     ax6.plot(ys, buyy, color = 'g', label = buy_price)
 
-
     ax1.legend(loc = "upper left")
     ax2.legend(loc = "upper left")
     ax3.legend(loc = "upper left")
@@ -131,7 +118,9 @@ def animate(i):
     ax5.legend(loc = "upper left")
     ax6.legend(loc = "upper left")
 
-
+T = threading.Thread(target = text_to_speech, args = (buyy,selll,marginn))
+T.daemon = False
+T.start()
 
 ani = animation.FuncAnimation(fig,animate,interval=800)
 plt.show()
