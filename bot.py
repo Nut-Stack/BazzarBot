@@ -5,6 +5,8 @@ from matplotlib import style, axis
 import pyttsx3
 import threading
 
+#Created by Nut-Stack
+
 item = input("What item?")
 plt.style.use("dark_background")
 
